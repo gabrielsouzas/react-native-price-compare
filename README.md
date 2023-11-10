@@ -1,2 +1,1 @@
-# react-native-price-compare
- Comparador de preçoes em React Native
+# Aplicativo Reatc Native para comparar preços de produtos
