@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, Text, TextInput, View } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, AntDesign } from '@expo/vector-icons';
 
 import Select from '../Select';
 import styles from './style';
@@ -134,6 +134,21 @@ export default function Body() {
     setPriceTarget(newPriceTarget);
   };
 
+  const deleteRow = () => {
+    const newQuantity = [...quantity];
+    newQuantity.pop();
+
+    const newPrice = [...price];
+    newPrice.pop();
+
+    const newPriceTarget = [...priceTarget];
+    newPriceTarget.pop();
+
+    setQuantity(newQuantity);
+    setPrice(newPrice);
+    setPriceTarget(newPriceTarget);
+  };
+
   return (
     <ScrollView vertical style={styles.container}>
       <Text style={styles.title}>
@@ -207,9 +222,24 @@ export default function Body() {
         </View>
       ))}
 
-      <TouchableOpacity style={styles.button} onPress={addRow}>
-        <Entypo style={styles.buttonIcon} name="plus" size={24} color="black" />
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={addRow}>
+          <Entypo
+            style={styles.buttonIcon}
+            name="plus"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={deleteRow}>
+          <AntDesign
+            style={styles.buttonIcon}
+            name="delete"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

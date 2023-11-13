@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   priceRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    marginTop: 12,
+    marginTop: 8,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -94,6 +94,15 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 8,
     borderRadius: 8,
+  },
+  buttonContainer: {
+    marginTop: 12,
+    marginBottom: 12,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
   },
   button: {
     marginTop: 10,
