@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, TextInput, View } from 'react-native';
+import { Alert, ScrollView, Text, TextInput, View } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 
 import Select from '../Select';
 import styles from './style';
+import { TouchableOpacity } from 'react-native-web';
 
 export default function Body() {
   const [selectedItem, setSelectedItem] = useState('');
+  const [establishment, setEstablishment] = useState('');
+  const [date, setDate] = useState(new Date().toLocaleDateString());
   const [quantity, setQuantity] = useState(['0.00']);
   const [price, setPrice] = useState(['0,00']);
   const [quantityTarget, setQuantityTarget] = useState('ML/GR');
@@ -13,38 +17,121 @@ export default function Body() {
 
   const options = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
 
-  const handleQuantityChange = (newText, index) => {
-    const newQuantity = [...quantity];
-    newQuantity[index] = newText;
-    setQuantity(newQuantity);
+  const validateNumber = (inputValue) => {
+    const numberRegex = /^\d*\.?\d*$/;
+
+    if (!numberRegex.test(String(inputValue).replace(',', '.'))) {
+      alert('Erro. Por favor, insira um número válido.');
+      return false;
+    }
+    return true;
   };
 
-  const handlePriceChange = (newText, index) => {
-    const newPrice = [...price];
-    newPrice[index] = newText;
-    setPrice(newPrice);
+  const handleQuantityChange = async (newText, index) => {
+    if (validateNumber(newText)) {
+      const newQuantity = [...quantity];
+      newQuantity[index] = newText;
+      setQuantity(newQuantity);
+
+      const newPriceTarget = [...priceTarget];
+
+      const cost = await calculateProportion(
+        price[index],
+        newText,
+        quantityTarget
+      );
+      if (cost) {
+        newPriceTarget[index] = cost;
+      }
+
+      setPriceTarget(newPriceTarget);
+    }
+  };
+
+  const handlePriceChange = async (newText, index) => {
+    if (validateNumber(newText)) {
+      const newPrice = [...price];
+      newPrice[index] = newText;
+      setPrice(newPrice);
+
+      const newPriceTarget = [...priceTarget];
+
+      const cost = await calculateProportion(
+        newText,
+        quantity[index],
+        quantityTarget
+      );
+      if (cost) {
+        newPriceTarget[index] = cost;
+      }
+
+      setPriceTarget(newPriceTarget);
+    }
   };
 
   const handlePriceTargetChange = (newText, index) => {
-    const newPriceTarget = [...priceTarget];
-    newPriceTarget[index] = newText;
-    setPriceTarget(newPriceTarget);
+    if (validateNumber(newText)) {
+      const newPriceTarget = [...priceTarget];
+      newPriceTarget[index] = newText;
+      setPriceTarget(newPriceTarget);
+    }
   };
 
   const calculatePriceTarget = async (value) => {
-    setQuantityTarget(value);
+    if (validateNumber(value)) {
+      setQuantityTarget(value);
 
-    const newPriceTarget = [...priceTarget];
+      const newPriceTarget = [...priceTarget];
 
-    for (let i = 0; i < quantity.length; i++) {
-      const cost = await calculateProportion(price[i], quantity[i], value);
-      newPriceTarget[i] = cost;
+      for (let i = 0; i < quantity.length; i++) {
+        const cost = await calculateProportion(price[i], quantity[i], value);
+        if (cost) {
+          newPriceTarget[i] = cost;
+        }
+      }
+
+      setPriceTarget(newPriceTarget);
     }
-    setPriceTarget(newPriceTarget);
   };
 
   const calculateProportion = (pr, qt, newQt) => {
-    return ((Number(newQt) * Number(pr)) / Number(qt)).toFixed(2);
+    /* try {
+      const newQuantity = Number(newQt.replace(',', '.'));
+      const price = Number(pr.replace(',', '.'));
+      const quantity = Number(qt.replace(',', '.'));
+
+      const proportion = ((newQuantity * price) / quantity).toFixed(2);
+
+      if (!isNaN(proportion) && isFinite(proportion)) {
+        return proportion;
+      }
+
+      return 0;
+    } catch (error) {
+      console.log(`Erro ao calcular proporção. Erro ${error}`);
+      // alert('Preencha os campos com números reais.');
+      return 0;
+    } */
+
+    return (
+      (Number(newQt.replace(',', '.')) * Number(pr.replace(',', '.'))) /
+      Number(qt.replace(',', '.'))
+    ).toFixed(2);
+  };
+
+  const addRow = () => {
+    const newQuantity = [...quantity];
+    newQuantity.push('0.00');
+
+    const newPrice = [...price];
+    newPrice.push('0.00');
+
+    const newPriceTarget = [...priceTarget];
+    newPriceTarget.push('0.00');
+
+    setQuantity(newQuantity);
+    setPrice(newPrice);
+    setPriceTarget(newPriceTarget);
   };
 
   return (
@@ -54,12 +141,30 @@ export default function Body() {
         azul para saber quanto um produto custa em uma quantidade (ML/GR)
       </Text>
 
+      <View style={styles.info}>
+        <TextInput
+          style={[styles.infoInput, styles.establishmentInput]}
+          placeholder="Estabelecimento"
+          value={establishment}
+          onChangeText={(newText) => setEstablishment(newText)}
+          selectTextOnFocus
+        />
+
+        <TextInput
+          style={[styles.infoInput, styles.dateInput]}
+          placeholder="Data"
+          value={date}
+          onChangeText={(newText) => setDate(newText)}
+          selectTextOnFocus
+        />
+      </View>
+
       <View style={styles.pricesHeader}>
         <Text style={styles.pricesHeaderRowProduto}>Produto</Text>
         <Text style={styles.pricesHeaderRow}>ML/GR</Text>
         <Text style={styles.pricesHeaderRow}>Preço</Text>
         <TextInput
-          style={styles.pricesHeaderRow}
+          style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
           placeholder="ML/GR"
           keyboardType="numeric"
           value={quantityTarget}
@@ -97,9 +202,14 @@ export default function Body() {
             placeholder="0,00"
             value={priceTarget[index]}
             onChangeText={(newText) => handlePriceTargetChange(newText, index)}
+            editable={false}
           />
         </View>
       ))}
+
+      <TouchableOpacity style={styles.button} onPress={addRow}>
+        <Entypo style={styles.buttonIcon} name="plus" size={24} color="black" />
+      </TouchableOpacity>
     </ScrollView>
   );
 }

@@ -2,14 +2,39 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    paddingStart: 14,
-    paddingEnd: 14,
+    marginStart: 14,
+    marginEnd: 14,
   },
   title: {
     marginTop: 8,
     color: '#FFF',
     fontSize: '1.1rem',
     textAlign: 'center',
+  },
+  info: {
+    flex: 1,
+    marginTop: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 4,
+  },
+  infoInput: {
+    backgroundColor: '#282829',
+    textAlign: 'center',
+    color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: '1rem',
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderRadius: 8,
+  },
+  dateInput: {
+    width: '40%',
+    height: 'auto',
+  },
+  establishmentInput: {
+    width: '55%',
+    height: 'auto',
   },
   pricesHeader: {
     flex: 1,
@@ -32,6 +57,9 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderRadius: 8,
   },
+  pricesHeaderRowEditable: {
+    color: 'rgb(49 53 203)',
+  },
   pricesHeaderRowProduto: {
     backgroundColor: '#D6D585',
     width: '34%',
@@ -49,7 +77,7 @@ const styles = StyleSheet.create({
   priceRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    marginTop: 8,
+    marginTop: 12,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -66,6 +94,19 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 8,
     borderRadius: 8,
+  },
+  button: {
+    marginTop: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 8,
+    backgroundColor: '#D6D585',
+    alignSelf: 'center',
+  },
+  buttonIcon: {
+    fontWeight: '700',
   },
 });
 
