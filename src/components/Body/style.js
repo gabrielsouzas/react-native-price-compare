@@ -1,5 +1,10 @@
 import { StyleSheet } from 'react-native';
 
+import colors from '../../utils/colors';
+import { get } from '../../utils/storage';
+
+const theme = await get('Theme');
+
 const styles = StyleSheet.create({
   container: {
     marginStart: 14,
@@ -7,7 +12,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 8,
-    color: '#FFF',
+    color: colors[theme].text,
     fontSize: '1.1rem',
     textAlign: 'center',
   },
@@ -19,9 +24,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   infoInput: {
-    backgroundColor: '#282829',
+    backgroundColor: colors[theme].infoBackground,
     textAlign: 'center',
-    color: '#FFF',
+    color: colors[theme].infoText,
     fontWeight: 'bold',
     fontSize: '1rem',
     paddingTop: 12,
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   pricesHeaderRow: {
-    backgroundColor: '#D6D585',
+    backgroundColor: colors[theme].tableHeaderBackground,
     width: '20%',
     height: 'auto',
     textAlign: 'center',
@@ -58,10 +63,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   pricesHeaderRowEditable: {
-    color: 'rgb(49 53 203)',
+    color: '#161ab1',
   },
   pricesHeaderRowProduto: {
-    backgroundColor: '#D6D585',
+    backgroundColor: colors[theme].tableHeaderBackground,
     width: '34%',
     height: 'auto',
     textAlign: 'center',
@@ -82,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   priceRow: {
-    backgroundColor: '#282829',
+    backgroundColor: colors[theme].tableRowBackground,
     width: '20%',
     height: 'auto',
     textAlign: 'center',
@@ -94,6 +99,9 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 8,
     borderRadius: 8,
+  },
+  priceTarget: {
+    color: colors[theme].targetPriceText,
   },
   buttonContainer: {
     marginTop: 12,
@@ -111,7 +119,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     borderRadius: 8,
-    backgroundColor: '#D6D585',
+    backgroundColor: colors[theme].buttonBackground,
     alignSelf: 'center',
   },
   buttonIcon: {

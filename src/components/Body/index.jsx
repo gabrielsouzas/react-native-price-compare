@@ -152,8 +152,8 @@ export default function Body() {
   return (
     <ScrollView vertical style={styles.container}>
       <Text style={styles.title}>
-        Insira a Marca, a quantidade em ML ou GR, o Preço e altere os campos em
-        azul para saber quanto um produto custa em uma quantidade (ML/GR)
+        Escolha/digite o produto, a quantidade em ML/GR, o Preço e altere o
+        campo ML/GR em azul para saber quanto um produto custa em uma quantidade
       </Text>
 
       <View style={styles.info}>
@@ -213,7 +213,7 @@ export default function Body() {
             keyboardType="numeric"
           />
           <TextInput
-            style={styles.priceRow}
+            style={[styles.priceRow, styles.priceTarget]}
             placeholder="0,00"
             value={priceTarget[index]}
             onChangeText={(newText) => handlePriceTargetChange(newText, index)}
@@ -228,7 +228,7 @@ export default function Body() {
             style={styles.buttonIcon}
             name="plus"
             size={24}
-            color="black"
+            color="#448f44"
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={deleteRow}>
@@ -236,7 +236,7 @@ export default function Body() {
             style={styles.buttonIcon}
             name="delete"
             size={24}
-            color="black"
+            color="#f14d4d"
           />
         </TouchableOpacity>
       </View>

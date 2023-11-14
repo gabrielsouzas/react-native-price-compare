@@ -1,8 +1,12 @@
 import { StyleSheet } from 'react-native';
 
+import colors from '../../utils/colors';
+import { get } from '../../utils/storage';
+const theme = await get('Theme');
+
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#282829',
+    backgroundColor: colors[theme].tableRowBackground,
     width: '34%',
     height: 'auto',
     textAlign: 'center',
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 5,
     outlineWidth: 0,
-    color: '#FFF',
+    color: colors[theme].tableRowText,
     // paddingBottom: 4,
     outlineWidth: 0,
 
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
   flatlistContainerStyle: {},
   flatlistItem: {},
   item: {
-    backgroundColor: 'rgb(50 52 65)',
+    backgroundColor: colors[theme].tableRowBackground,
     paddingLeft: 5,
     paddingBottom: 5,
     paddingTop: 5,
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: '1rem',
-    color: '#FFF',
+    color: colors[theme].tableRowText,
   },
 });
 
