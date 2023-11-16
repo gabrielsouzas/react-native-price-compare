@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text, TextInput, View } from 'react-native';
-import { Entypo, AntDesign } from '@expo/vector-icons';
+import React, { useContext, useRef, useState } from 'react';
+import { ScrollView, Text, TextInput, View } from 'react-native';
+import { Entypo, AntDesign, Ionicons } from '@expo/vector-icons';
+import ViewShot from 'react-native-view-shot';
 
 import Select from '../Select';
-import styles from './style';
 import { TouchableOpacity } from 'react-native-web';
+import AppContext from '../../context/AppContext';
+import useStyles from './style';
 
 export default function Body() {
+  const viewShotRef1 = useRef();
+  const viewShotRef2 = useRef();
+
+  const { theme } = useContext(AppContext);
+  const styles = useStyles(theme);
+
   const [selectedItem, setSelectedItem] = useState('');
   const [establishment, setEstablishment] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString());
@@ -149,6 +157,15 @@ export default function Body() {
     setPriceTarget(newPriceTarget);
   };
 
+  const captureScreen = async (viewRef) => {
+    try {
+      const uri = await viewRef.current.capture();
+      console.log('Imagem capturada:', uri);
+    } catch (error) {
+      console.error('Erro ao capturar a tela:', error);
+    }
+  };
+
   return (
     <ScrollView vertical style={styles.container}>
       <Text style={styles.title}>
@@ -156,71 +173,75 @@ export default function Body() {
         campo ML/GR em azul para saber quanto um produto custa em uma quantidade
       </Text>
 
-      <View style={styles.info}>
-        <TextInput
-          style={[styles.infoInput, styles.establishmentInput]}
-          placeholder="Estabelecimento"
-          value={establishment}
-          onChangeText={(newText) => setEstablishment(newText)}
-          selectTextOnFocus
-        />
-
-        <TextInput
-          style={[styles.infoInput, styles.dateInput]}
-          placeholder="Data"
-          value={date}
-          onChangeText={(newText) => setDate(newText)}
-          selectTextOnFocus
-        />
-      </View>
-
-      <View style={styles.pricesHeader}>
-        <Text style={styles.pricesHeaderRowProduto}>Produto</Text>
-        <Text style={styles.pricesHeaderRow}>ML/GR</Text>
-        <Text style={styles.pricesHeaderRow}>Preço</Text>
-        <TextInput
-          style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
-          placeholder="ML/GR"
-          keyboardType="numeric"
-          value={quantityTarget}
-          onChangeText={(newText) => calculatePriceTarget(newText)}
-          selectTextOnFocus
-        />
-      </View>
-
-      {quantity.map((value, index) => (
-        <View key={index} style={styles.priceRowContainer}>
-          <Select
-            options={options}
-            placeholder="Sel/Dig"
-            setSelectedItem={setSelectedItem}
-          />
-
+      <ViewShot ref={viewShotRef1} options={{ format: 'png', quality: 0.9 }}>
+        <View style={styles.info}>
           <TextInput
-            style={styles.priceRow}
-            placeholder="0.00"
-            value={quantity[index]}
-            onChangeText={(newText) => handleQuantityChange(newText, index)}
+            style={[styles.infoInput, styles.establishmentInput]}
+            placeholder="Estabelecimento"
+            value={establishment}
+            onChangeText={(newText) => setEstablishment(newText)}
             selectTextOnFocus
-            keyboardType="numeric"
           />
+
           <TextInput
-            style={styles.priceRow}
-            placeholder="0,00"
-            value={price[index]}
-            onChangeText={(newText) => handlePriceChange(newText, index)}
+            style={[styles.infoInput, styles.dateInput]}
+            placeholder="Data"
+            value={date}
+            onChangeText={(newText) => setDate(newText)}
             selectTextOnFocus
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={[styles.priceRow, styles.priceTarget]}
-            placeholder="0,00"
-            value={priceTarget[index]}
-            onChangeText={(newText) => handlePriceTargetChange(newText, index)}
-            editable={false}
           />
         </View>
-      ))}
+
+        <View style={styles.pricesHeader}>
+          <Text style={styles.pricesHeaderRowProduto}>Produto</Text>
+          <Text style={styles.pricesHeaderRow}>ML/GR</Text>
+          <Text style={styles.pricesHeaderRow}>Preço</Text>
+          <TextInput
+            style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
+            placeholder="ML/GR"
+            keyboardType="numeric"
+            value={quantityTarget}
+            onChangeText={(newText) => calculatePriceTarget(newText)}
+            selectTextOnFocus
+          />
+        </View>
+
+        {quantity.map((value, index) => (
+          <View key={index} style={styles.priceRowContainer}>
+            <Select
+              options={options}
+              placeholder="Sel/Dig"
+              setSelectedItem={setSelectedItem}
+            />
+
+            <TextInput
+              style={styles.priceRow}
+              placeholder="0.00"
+              value={quantity[index]}
+              onChangeText={(newText) => handleQuantityChange(newText, index)}
+              selectTextOnFocus
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.priceRow}
+              placeholder="0,00"
+              value={price[index]}
+              onChangeText={(newText) => handlePriceChange(newText, index)}
+              selectTextOnFocus
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={[styles.priceRow, styles.priceTarget]}
+              placeholder="0,00"
+              value={priceTarget[index]}
+              onChangeText={(newText) =>
+                handlePriceTargetChange(newText, index)
+              }
+              editable={false}
+            />
+          </View>
+        ))}
+      </ViewShot>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={addRow}>
@@ -238,6 +259,13 @@ export default function Body() {
             size={24}
             color="#f14d4d"
           />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => captureScreen(viewShotRef1)}
+        >
+          <Ionicons name="print" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </ScrollView>

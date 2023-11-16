@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   FlatList,
   Text,
@@ -9,9 +9,13 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import styles from './style';
+import useStyles from './style';
+import AppContext from '../../context/AppContext';
 
 export default function Select({ options, placeholder, setSelectedItem }) {
+  const { theme } = useContext(AppContext);
+  const styles = useStyles(theme);
+
   const [value, setValue] = useState('');
   const [filteredData, setFilteredData] = useState('');
   const [selectIsOpen, setSelectIsOpen] = useState(false);

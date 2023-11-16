@@ -1,5 +1,6 @@
 const colors = {
   dark: {
+    headerBackground: '#282829',
     background: 'rgb(68 68 75)',
     text: '#FFF',
     infoText: '#FFF',
@@ -12,6 +13,7 @@ const colors = {
     targetPriceText: 'rgb(129 132 223)',
   },
   light: {
+    headerBackground: '#86868d',
     background: '#c1c1c7',
     text: '#000',
     infoText: '#000',
