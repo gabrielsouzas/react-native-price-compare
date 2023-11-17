@@ -1,10 +1,15 @@
 import React, { useContext, useRef, useState } from 'react';
-import { ScrollView, Text, TextInput, View } from 'react-native';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { Entypo, AntDesign, Ionicons } from '@expo/vector-icons';
 import ViewShot from 'react-native-view-shot';
 
 import Select from '../Select';
-import { TouchableOpacity } from 'react-native-web';
 import AppContext from '../../context/AppContext';
 import useStyles from './style';
 
@@ -18,6 +23,7 @@ export default function Body() {
   const [selectedItem, setSelectedItem] = useState('');
   const [establishment, setEstablishment] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString());
+  const [product, setProduct] = useState(['']);
   const [quantity, setQuantity] = useState(['0.00']);
   const [price, setPrice] = useState(['0,00']);
   const [quantityTarget, setQuantityTarget] = useState('ML/GR');
@@ -83,6 +89,12 @@ export default function Body() {
       newPriceTarget[index] = newText;
       setPriceTarget(newPriceTarget);
     }
+  };
+
+  const handleProductChange = (newText, index) => {
+    const newProduct = [...product];
+    newProduct[index] = newText;
+    setProduct(newProduct);
   };
 
   const calculatePriceTarget = async (value) => {
@@ -178,14 +190,22 @@ export default function Body() {
           <TextInput
             style={[styles.infoInput, styles.establishmentInput]}
             placeholder="Estabelecimento"
+            placeholderTextColor={'#FFF'}
+            textAlign="center"
             value={establishment}
             onChangeText={(newText) => setEstablishment(newText)}
             selectTextOnFocus
+            onBlur={() => {
+              if (!establishment) {
+                setEstablishment(''); // Reseta para uma string vazia se o texto for removido
+              }
+            }}
           />
 
           <TextInput
             style={[styles.infoInput, styles.dateInput]}
             placeholder="Data"
+            placeholderTextColor={'#FFF'}
             value={date}
             onChangeText={(newText) => setDate(newText)}
             selectTextOnFocus
@@ -199,6 +219,7 @@ export default function Body() {
           <TextInput
             style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
             placeholder="ML/GR"
+            placeholderTextColor={'#FFF'}
             keyboardType="numeric"
             value={quantityTarget}
             onChangeText={(newText) => calculatePriceTarget(newText)}
@@ -208,15 +229,25 @@ export default function Body() {
 
         {quantity.map((value, index) => (
           <View key={index} style={styles.priceRowContainer}>
-            <Select
+            {/*<Select
               options={options}
               placeholder="Sel/Dig"
               setSelectedItem={setSelectedItem}
+            />*/}
+
+            <TextInput
+              style={[styles.priceRow, styles.productInput]}
+              placeholder="Digite"
+              placeholderTextColor={'#FFF'}
+              value={product[index]}
+              onChangeText={(newText) => handleProductChange(newText, index)}
+              selectTextOnFocus
             />
 
             <TextInput
               style={styles.priceRow}
               placeholder="0.00"
+              placeholderTextColor={'#FFF'}
               value={quantity[index]}
               onChangeText={(newText) => handleQuantityChange(newText, index)}
               selectTextOnFocus
@@ -225,6 +256,7 @@ export default function Body() {
             <TextInput
               style={styles.priceRow}
               placeholder="0,00"
+              placeholderTextColor={'#FFF'}
               value={price[index]}
               onChangeText={(newText) => handlePriceChange(newText, index)}
               selectTextOnFocus
@@ -233,6 +265,7 @@ export default function Body() {
             <TextInput
               style={[styles.priceRow, styles.priceTarget]}
               placeholder="0,00"
+              placeholderTextColor={'#FFF'}
               value={priceTarget[index]}
               onChangeText={(newText) =>
                 handlePriceTargetChange(newText, index)
