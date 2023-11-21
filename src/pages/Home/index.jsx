@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
 import Header from '../../components/Header';
-import Body from '../../components/Body';
+import BodyTwo from '../../components/BodyTwo';
 import AppContext from '../../context/AppContext';
 import useStyles from './style';
 
@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Header />
-      <Body />
+      <BodyTwo />
     </View>
   );
 }
