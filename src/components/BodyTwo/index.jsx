@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -40,6 +40,13 @@ export default function Body() {
   const [priceTargetC, setPriceTargetC] = useState('0.00');
   const [priceTargetD, setPriceTargetD] = useState('0.00');
 
+  useEffect(() => {
+    calculatePriceTarget(quantityTargetA, 'A');
+    calculatePriceTarget(quantityTargetB, 'B');
+    calculatePriceTarget(quantityTargetC, 'C');
+    calculatePriceTarget(quantityTargetD, 'D');
+  }, [quantity, price]);
+
   const validateNumber = (inputValue) => {
     const numberRegex = /^\d*\.?\d*$/;
 
@@ -54,62 +61,53 @@ export default function Body() {
     if (validateNumber(newText)) {
       setQuantity(newText);
 
-      const cost = await calculateProportion(price, newText, quantityTarget);
+      /*const cost = await calculateProportion(price, newText, quantityTargetA);
+      if (cost) {
+        console.log(cost);
+        setPriceTargetA(cost);
+      }*/
+    }
+  };
+
+  const handlePriceChange = async (newText) => {
+    if (validateNumber(newText)) {
+      setPrice(newText);
+
+      /*const cost = await calculateProportion(newText, quantity, quantityTargetA);
       if (cost) {
         setPriceTargetA(cost);
-      }
+      }*/
     }
   };
 
-  const handlePriceChange = async (newText, index) => {
+  const handlePriceTargetChange = (newText) => {
     if (validateNumber(newText)) {
-      const newPrice = [...price];
-      newPrice[index] = newText;
-      setPrice(newPrice);
-
-      const newPriceTarget = [...priceTarget];
-
-      const cost = await calculateProportion(
-        newText,
-        quantity[index],
-        quantityTarget
-      );
-      if (cost) {
-        newPriceTarget[index] = cost;
-      }
-
-      setPriceTarget(newPriceTarget);
+      setPriceTarget(newText);
     }
   };
 
-  const handlePriceTargetChange = (newText, index) => {
-    if (validateNumber(newText)) {
-      const newPriceTarget = [...priceTarget];
-      newPriceTarget[index] = newText;
-      setPriceTarget(newPriceTarget);
-    }
-  };
-
-  const handleProductChange = (newText, index) => {
-    const newProduct = [...product];
-    newProduct[index] = newText;
-    setProduct(newProduct);
-  };
-
-  const calculatePriceTarget = async (value) => {
+  const calculatePriceTarget = async (value, column) => {
     if (validateNumber(value)) {
-      setQuantityTarget(value);
+      const cost = await calculateProportion(price, quantity, value);
 
-      const newPriceTarget = [...priceTarget];
-
-      for (let i = 0; i < quantity.length; i++) {
-        const cost = await calculateProportion(price[i], quantity[i], value);
-        if (cost) {
-          newPriceTarget[i] = cost;
+      if (cost) {
+        switch (column) {
+          case 'A':
+            setPriceTargetA(cost);
+            break;
+          case 'B':
+            setPriceTargetB(cost);
+            break;
+          case 'C':
+            setPriceTargetC(cost);
+            break;
+          case 'D':
+            setPriceTargetD(cost);
+            break;
+          default:
+            break;
         }
       }
-
-      setPriceTarget(newPriceTarget);
     }
   };
 
@@ -165,8 +163,12 @@ export default function Body() {
 
         <View style={styles.pricesHeader}>
           <Text style={styles.pricesHeaderRowProduto}>Produto</Text>
-          <Text style={styles.pricesHeaderRow}>Quantidade</Text>
-          <Text style={styles.pricesHeaderRow}>Preço</Text>
+          <Text style={[styles.pricesHeaderRow, styles.pricesHeaderRowTop]}>
+            Qtde
+          </Text>
+          <Text style={[styles.pricesHeaderRow, styles.pricesHeaderRowTop]}>
+            Preço
+          </Text>
         </View>
 
         <View style={styles.priceRowContainer}>
@@ -180,8 +182,8 @@ export default function Body() {
           />
 
           <TextInput
-            style={styles.priceRow}
-            placeholder="0.00"
+            style={[styles.priceRow, styles.priceRowTop]}
+            placeholder="0"
             placeholderTextColor={'#FFF'}
             value={quantity}
             onChangeText={(newText) => handleQuantityChange(newText)}
@@ -189,7 +191,7 @@ export default function Body() {
             keyboardType="numeric"
           />
           <TextInput
-            style={styles.priceRow}
+            style={[styles.priceRow, styles.priceRowTop]}
             placeholder="0,00"
             placeholderTextColor={'#FFF'}
             value={price}
@@ -202,45 +204,77 @@ export default function Body() {
         <View>
           <View style={styles.pricesHeader}>
             <TextInput
-              style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
+              style={[
+                styles.pricesHeaderRow,
+                styles.pricesHeaderRowEditable,
+                styles.pricesHeaderRowBottom,
+              ]}
               placeholder="ML/GR"
               placeholderTextColor={'#FFF'}
               keyboardType="numeric"
               value={quantityTargetA}
-              onChangeText={(newText) => calculatePriceTarget(newText)}
+              onChangeText={(newText) => {
+                calculatePriceTarget(newText, 'A');
+                setQuantityTargetA(newText);
+              }}
               selectTextOnFocus
             />
             <TextInput
-              style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
+              style={[
+                styles.pricesHeaderRow,
+                styles.pricesHeaderRowEditable,
+                styles.pricesHeaderRowBottom,
+              ]}
               placeholder="ML/GR"
               placeholderTextColor={'#FFF'}
               keyboardType="numeric"
               value={quantityTargetB}
-              onChangeText={(newText) => calculatePriceTarget(newText)}
+              onChangeText={(newText) => {
+                calculatePriceTarget(newText, 'B');
+                setQuantityTargetB(newText);
+              }}
               selectTextOnFocus
             />
             <TextInput
-              style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
+              style={[
+                styles.pricesHeaderRow,
+                styles.pricesHeaderRowEditable,
+                styles.pricesHeaderRowBottom,
+              ]}
               placeholder="ML/GR"
               placeholderTextColor={'#FFF'}
               keyboardType="numeric"
               value={quantityTargetC}
-              onChangeText={(newText) => calculatePriceTarget(newText)}
+              onChangeText={(newText) => {
+                calculatePriceTarget(newText, 'C');
+                setQuantityTargetC(newText);
+              }}
               selectTextOnFocus
             />
             <TextInput
-              style={[styles.pricesHeaderRow, styles.pricesHeaderRowEditable]}
+              style={[
+                styles.pricesHeaderRow,
+                styles.pricesHeaderRowEditable,
+                styles.pricesHeaderRowBottom,
+              ]}
               placeholder="ML/GR"
               placeholderTextColor={'#FFF'}
               keyboardType="numeric"
               value={quantityTargetD}
-              onChangeText={(newText) => calculatePriceTarget(newText)}
+              onChangeText={(newText) => {
+                calculatePriceTarget(newText, 'D');
+                setQuantityTargetD(newText);
+              }}
               selectTextOnFocus
             />
           </View>
           <View style={styles.priceRowContainer}>
             <TextInput
-              style={[styles.priceRow, styles.priceTarget]}
+              style={[
+                styles.priceRow,
+                styles.priceTarget,
+                styles.priceRowBottom,
+              ]}
               placeholder="0,00"
               placeholderTextColor={'#FFF'}
               value={priceTargetA}
@@ -248,7 +282,11 @@ export default function Body() {
               editable={false}
             />
             <TextInput
-              style={[styles.priceRow, styles.priceTarget]}
+              style={[
+                styles.priceRow,
+                styles.priceTarget,
+                styles.priceRowBottom,
+              ]}
               placeholder="0,00"
               placeholderTextColor={'#FFF'}
               value={priceTargetB}
@@ -256,7 +294,11 @@ export default function Body() {
               editable={false}
             />
             <TextInput
-              style={[styles.priceRow, styles.priceTarget]}
+              style={[
+                styles.priceRow,
+                styles.priceTarget,
+                styles.priceRowBottom,
+              ]}
               placeholder="0,00"
               placeholderTextColor={'#FFF'}
               value={priceTargetC}
@@ -264,7 +306,11 @@ export default function Body() {
               editable={false}
             />
             <TextInput
-              style={[styles.priceRow, styles.priceTarget]}
+              style={[
+                styles.priceRow,
+                styles.priceTarget,
+                styles.priceRowBottom,
+              ]}
               placeholder="0,00"
               placeholderTextColor={'#FFF'}
               value={priceTargetD}

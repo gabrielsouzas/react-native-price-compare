@@ -47,7 +47,6 @@ const useStyles = (theme) =>
     },
     pricesHeaderRow: {
       backgroundColor: colors[theme].tableHeaderBackground,
-      width: '20%',
       height: 'auto',
       textAlign: 'center',
       color: '#000',
@@ -59,12 +58,18 @@ const useStyles = (theme) =>
       paddingLeft: 8,
       borderRadius: 8,
     },
+    pricesHeaderRowTop: {
+      width: '26%',
+    },
+    pricesHeaderRowBottom: {
+      width: '23%',
+    },
     pricesHeaderRowEditable: {
       color: '#161ab1',
     },
     pricesHeaderRowProduto: {
       backgroundColor: colors[theme].tableHeaderBackground,
-      width: '34%',
+      width: '43%',
       height: 'auto',
       textAlign: 'center',
       color: '#000',
@@ -85,7 +90,6 @@ const useStyles = (theme) =>
     },
     priceRow: {
       backgroundColor: colors[theme].tableRowBackground,
-      width: '20%',
       height: 'auto',
       textAlign: 'center',
       color: '#FFF',
@@ -97,8 +101,14 @@ const useStyles = (theme) =>
       paddingLeft: 8,
       borderRadius: 8,
     },
+    priceRowTop: {
+      width: '26%',
+    },
+    priceRowBottom: {
+      width: '23%',
+    },
     productInput: {
-      width: '34%',
+      width: '43%',
     },
     priceTarget: {
       color: colors[theme].targetPriceText,
