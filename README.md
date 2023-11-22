@@ -1,12 +1,10 @@
-# Price Compare App
+# <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="30" height="30" /> Price Compare App
 
 Aplicativo React Native para comparar preços de produtos.
 
-# <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="30" height="30" /> React App Full-Stack
-
 ![Versão](https://img.shields.io/badge/version-1.0.0-blue) ![Licença](https://img.shields.io/badge/license-MIT-green)
 
-<img src="src/images/prints/print_02.jpeg" alt="Print Screen" height=400> <img src="src/images/prints/print_01.jpeg" alt="Print Screen" height=400>
+<img src="src/images/prints/print_02.jpeg" alt="Print Screen" height=440> <img src="src/images/prints/print_01.jpeg" alt="Print Screen" height=440>
 
 ## 🔧 Tecnologias/Ferramentas Utilizadas
 
