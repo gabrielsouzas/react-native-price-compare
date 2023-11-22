@@ -1,11 +1,11 @@
 import React from 'react';
-import Home from './src/pages/Home';
 import Provider from './src/context/Provider';
+import Routes from './src/routes';
 
 export default function App() {
   return (
     <Provider>
-      <Home />
+      <Routes />
     </Provider>
   );
 }

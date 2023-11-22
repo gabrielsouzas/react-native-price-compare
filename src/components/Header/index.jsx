@@ -18,8 +18,8 @@ export default function Header() {
         style={styles.logo}
         source={
           theme === 'dark'
-            ? require('../../images/price_compare_logo_dark.png')
-            : require('../../images/price_compare_logo_light.png')
+            ? require('../../images/logo.png')
+            : require('../../images/logo.png')
         }
       />
       {(theme === 'dark' && (
