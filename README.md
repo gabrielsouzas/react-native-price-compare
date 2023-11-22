@@ -6,9 +6,7 @@ Aplicativo React Native para comparar preços de produtos.
 
 ![Versão](https://img.shields.io/badge/version-1.0.0-blue) ![Licença](https://img.shields.io/badge/license-MIT-green)
 
-<img src="./images/prints/print_01.jpeg" alt="Print Screen" width=450> <img src="./images/prints/print_02.jpeg" alt="Print Screen" width=450>
-
-> Aplicativo React Native para comparar preços de produtos..
+<img src="src/images/prints/print_02.jpeg" alt="Print Screen" height=400> <img src="src/images/prints/print_01.jpeg" alt="Print Screen" height=400>
 
 ## 🔧 Tecnologias/Ferramentas Utilizadas
 
