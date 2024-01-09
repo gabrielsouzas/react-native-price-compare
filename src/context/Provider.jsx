@@ -14,7 +14,6 @@ function Provider({ children }) {
         if (storedTheme !== null) {
           setTheme(storedTheme);
         } else {
-          console.log('entrou');
           const colorScheme = Appearance.getColorScheme();
           await save('Theme', colorScheme);
           setTheme(colorScheme);
