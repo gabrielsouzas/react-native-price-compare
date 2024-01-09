@@ -5,7 +5,7 @@ import { get, save } from '../utils/storage';
 import { Appearance } from 'react-native';
 
 function Provider({ children }) {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     const fetchTheme = async () => {
