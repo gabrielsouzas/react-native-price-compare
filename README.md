@@ -19,7 +19,8 @@ O principal objetivo deste projeto foi desenvolver um aplicativo em React Native
 ## 🎯 Funções
 
 - Cálculo de um produto com várias quantidades possíveis;
-- Cálculo de vários produtos, com várias quantidades e valores distintos.
+- Cálculo de vários produtos, com várias quantidades e valores distintos;
+- Troca de tema (Claro/Escuro).
 
 ## 👥 Contribuição
 
